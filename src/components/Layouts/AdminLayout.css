@@ -1,0 +1,260 @@
+@font-face {
+    font-family: myFirstFont;
+    src: url(./BrandonText-Regular.otf) format("opentype");
+}
+
+.bg-blue {
+    background-color: #0b5ed7;
+}
+
+.user-login {
+    width: 40px;
+    border-radius: 50%;
+}
+
+.fs-icomoon {
+    font-size: 24px;
+}
+
+.sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
+    font-size: 20px;
+}
+
+.burger-toggle-sidebar {
+    width: 20px;
+}
+
+@import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
+body {
+    background-color: #e9e5ef;
+    font-family: 'Calibri', sans-serif !important
+}
+
+.container {
+    margin-top: 100px
+}
+
+.card {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0px solid transparent;
+    border-radius: 0px
+}
+
+
+.card-body {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem
+}
+
+.card .card-title {
+    position: relative;
+    font-weight: 600;
+    margin-bottom: 10px
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0;
+    background-color: transparent
+}
+
+* {
+    outline: none
+}
+
+.table th,
+.table thead th {
+    font-weight: 500
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    padding: 1rem 0.5rem;
+}
+
+.table th {
+    padding: 0.5rem 1rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6
+}
+
+.table th,
+.table thead th {
+    font-weight: 500
+}
+
+th {
+    text-align: inherit
+}
+
+.m-b-20 {
+    margin-bottom: 20px
+}
+
+.customcheckbox {
+    display: block;
+    position: relative;
+    padding-left: 24px;
+    font-weight: 100;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.customcheckbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer
+}
+
+.checkmark {
+    position: absolute;
+    top: -3px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #CDCDCD;
+    border-radius: 6px
+}
+
+.customcheckbox input:checked~.checkmark {
+    background-color: #2196BB
+}
+
+.customcheckbox .checkmark:after {
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg)
+}
+
+.customtable > tr:nth-child(even) {
+    background-color: #f3f5f5;
+}
+
+.sb-topnav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#layoutSidenav_nav {
+    position: fixed;
+    width: 225px;
+    height: 100%;
+}
+
+@media (min-width: 992px){ 
+    #layoutSidenav #layoutSidenav_content {
+        transition: margin 0.15s ease-in-out;
+        margin-left: 225px;
+    }
+}
+
+@media (min-width: 992px){ 
+    .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
+        margin-left: 0px;
+    }
+}
+
+.btn-tbl-action {
+    color: #000;
+    background-color: #ffffff00;
+    border-color: #f8f9fa00;
+}
+
+.btn-tbl-action > .icon-trash2 {
+    font-size: 18px;
+    color: #db3024;
+}
+
+/* .td-table-action {
+    display: flex;
+    justify-content: end;
+    border: 0;
+} */
+
+.sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-heading {
+    padding: 1rem 1rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.form-control:focus, .dataTable-input:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: unset;
+}
+
+.form-select:focus, .dataTable-selector:focus {
+    box-shadow: unset;
+}
+
+#navbarDropdown::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0.1em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+}
+
+#navbarDropdown i {
+    position: absolute;
+    left: 40px;
+    bottom: 10px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #eceeef;
+    border-radius: 100%;
+    background-color: green;
+}
+
+/* -------------- data table -------------------- */
+.from-dt-input-page {
+    display: initial;
+    margin: 0 5px;
+}
+.dt-input-page {
+    display: initial;
+    margin: 0 2px;
+    width: 60px;
+}
+
+.dt-select-display {
+    width: 75px;
+}
+
+.dt-input-search {
+    width: 170px;
+}
