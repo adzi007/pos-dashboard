@@ -31,7 +31,7 @@ function Categories() {
     const category = useSelector( (state) => state.category );
     const offset = (category.page.offset !== undefined ? category.page.offset : 0) + 1;
     
-    console.log("category", category);
+    // console.log("category", category);
 
     const refreshDataCategory = async () => {
         // let resCategory = await dataCategory();

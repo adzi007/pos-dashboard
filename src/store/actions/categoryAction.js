@@ -72,3 +72,27 @@ export const getCategoryPage = (page) => {
 
     }
 }
+
+
+export const getCategoryAll = () => {
+
+    // console.log("page action", page);
+
+    return async (dispatch, getState) => {
+
+        expired = getState().auth.expire
+
+        const response = await axiosJWT.get("http://localhost:5000/category-all", {
+            headers: {
+                Authorization: `Bearer ${getState().auth.token}`
+            }
+        });
+
+        dispatch({
+            type: "SET_CATEGORY",
+            data: response.data.data,
+            page: response.data.page
+        });
+
+    }
+}
