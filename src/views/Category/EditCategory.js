@@ -1,10 +1,11 @@
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getToken } from "../../store/actions/authActions";
 import { getCategoryAll } from "../../store/actions/categoryAction";
-import AdminLayout from "../../components/Layouts/AdminLayout";
-import { postCategory } from "../../functions/category";
+import AdminLayout from "../../components/Layouts/AdminLayout"
 
 function AddCategory() {
 
@@ -31,6 +32,32 @@ function AddCategory() {
 
     const category = useSelector( (state) => state.category );
 
+    const axiosJWT = axios.create();
+
+    const authExpire = useSelector( (state) => state.auth.expire );
+
+    axiosJWT.interceptors.request.use(async (config) => {
+
+        const currentDate = new Date();
+        if (authExpire * 1000 < currentDate.getTime()) {
+            const response = await axios.get('http://localhost:5000/token');
+            config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+            const decoded = jwt_decode(response.data.accessToken);
+            
+            dispatch({
+                type: "SET_TOKEN",
+                token: response.data.accessToken,
+                expire: decoded.exp
+            });
+        }
+    
+        return config;
+        
+    }, (error) => {
+        return Promise.reject(error);
+    });
+
+
     const submitCategory = async (e) => {
 
         e.preventDefault();
@@ -43,7 +70,11 @@ function AddCategory() {
             data.append("parent_category", parent_category);
             data.append('foto', foto);
 
-            let inputCategory = await postCategory(data);
+            const config = {
+                headers: { 'content-type': 'multipart/form-data' }
+            }
+            
+            let inputCategory = await axiosJWT.post('http://localhost:5000/category', data, config);
 
             if(inputCategory.status == 200){
 
@@ -67,7 +98,7 @@ function AddCategory() {
 
                 <div className="row mt-3 mb-2">
                     <div className="col-6">
-                        <h2 className="mt-4">Add Kategori </h2>
+                        <h2 className="mt-4">Edit Kategori </h2>
                         <ol className="breadcrumb mb-2">
                             <li className="breadcrumb-item ">Dashboard</li>
                             <li className="breadcrumb-item ">Category</li>

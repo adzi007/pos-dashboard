@@ -5,9 +5,16 @@ import store from "../store";
 const { dispatch } = store; // direct access to redux store.
 
 const axiosJWT = axios.create();
+// let expire  = '';
 
+// const intercept = async () => {
+
+//     expire = await store.getState().auth.expire;
+// }
 
 axiosJWT.interceptors.request.use(async (config) => {
+
+    // intercept()
 
     let expire = await store.getState().auth.expire;
 
@@ -27,19 +34,29 @@ axiosJWT.interceptors.request.use(async (config) => {
 
     return config;
 
-}, (error) => {
+    }, (error) => {
     return Promise.reject(error);
 });
 
+class foo {
 
-export const postCategory = async (data) => {
 
-    const config = {
-            headers: { 'content-type': 'multipart/form-data' }
+    constructor() {  // Constructor
+
+        // intercept();
+
     }
 
-    let submitCategory = await axiosJWT.post('http://localhost:5000/category', data, config);
+    async getFoo(){
 
-    return submitCategory;
+        const response = await axiosJWT.get("http://localhost:5000/category", {
+            headers: {
+                Authorization: `Bearer ${store.getState().auth.token}`
+            }
+        });
+        return response.data;
 
+    }
 }
+
+export const { getFoo } = new foo();

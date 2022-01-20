@@ -3,17 +3,18 @@ import { Link } from "react-router-dom";
 import AdminLayout from "../../components/Layouts/AdminLayout";
 import Dt_table from "../../components/Dt_table";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategory, getCategoryPage } from "../../store/actions/categoryAction";
+import { getCategory } from "../../store/actions/categoryAction";
 import { getToken } from "../../store/actions/authActions";
 import { add, dataCategory } from "../../functions/category.js";
 import axios from 'axios';
 
 function Categories() {
-
-
-    const [pesan, setPesan] = useState("hello world...!");
     
     const dispatch = useDispatch();
+
+    const perPage = 10;
+    const category = useSelector( (state) => state.category );
+    const offset = (category.page.offset !== undefined ? category.page.offset : 0) + 1;
 
     useEffect(() => {
 
@@ -26,12 +27,7 @@ function Categories() {
         await dispatch(getToken());
         dispatch(getCategory());
     }
-
-    const perPage = 10;
-    const category = useSelector( (state) => state.category );
-    const offset = (category.page.offset !== undefined ? category.page.offset : 0) + 1;
-    
-    // console.log("category", category);
+   
 
     const refreshDataCategory = async () => {
         // let resCategory = await dataCategory();
@@ -62,7 +58,7 @@ function Categories() {
                     <div className="row">
                         <div className="col-12">
                                     
-                                    <Dt_table datasource="testdata" datastate={category} pageNavigation={getCategoryPage}>
+                                    <Dt_table datasource="testdata" datastate={category} pageNavigation={getCategory}>
                                         <thead className="thead-light">
                                             <tr>
                                                 <th> &nbsp;&nbsp;#</th>

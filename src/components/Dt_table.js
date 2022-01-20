@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 function Dt_table(props) {
 
+   
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -19,21 +20,26 @@ function Dt_table(props) {
 
     
     const changePage = useRef(null);
+    const changeSearch = useRef('');
 
     const { pageNavigation } = props;
-   
-
-    const nextHandle = async ( ) => {
-        navigate("/category?page=2");
-    }
-
-    const prevtHandle = async () => {
-        console.log("prev page");
-    }
 
     const onChangePage = ( pagechange ) => {
 
-        dispatch(pageNavigation(pagechange));
+        dispatch(pageNavigation(pagechange, changeSearch ));
+    }
+
+    console.log('state', props.datastate);
+
+    const onSearch = (keyword) => {
+        // console.log("mencari : ", keyword);
+
+        dispatch({
+            type: "SET_SEARCH",
+            searchKeyword: keyword
+        });
+
+        dispatch(pageNavigation(1, keyword ));
     }
 
     return (
@@ -56,7 +62,7 @@ function Dt_table(props) {
                     <div className="col-8">
                         <div className="form-group row justify-content-end">
                             <label  className="col-1 col-form-label px-0">Search</label>
-                            <input type="text" className="form-control dt-input-search" id="exampleFormControlInput1" />
+                            <input type="text" className="form-control dt-input-search"  defaultValue={props.datastate.searchKeyword} ref={changeSearch} onChange={(e) => onSearch(e.target.value)}  />
                         </div>
                     </div>
                 </div>

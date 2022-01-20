@@ -2,6 +2,8 @@ const initialState = {
     loading: true,
     data: [],
     page: {},
+    allData: [],
+    searchKeyword: ''
 }
 
 function reducer(state = initialState, action) {
@@ -11,10 +13,17 @@ function reducer(state = initialState, action) {
 
             return { 
                 ...state, 
-                // users: action.users 
-                // push function
                 loading: false,
                 data: action.data,
+                page: action.page
+            };
+
+        case "SET_ALL_CATEGORY":
+
+            return { 
+                ...state, 
+                loading: false,
+                allData: action.data,
                 page: action.page
             };
 
@@ -22,6 +31,12 @@ function reducer(state = initialState, action) {
             return {
                 ...state, 
                 page: action.page,
+            }
+
+        case "SET_SEARCH": 
+            return {
+                ...state, 
+                searchKeyword: action.searchKeyword,
             }
 
         default:

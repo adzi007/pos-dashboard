@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import { fetchUsers } from '../store/actions/userActions';
 import { getToken } from '../store/actions/authActions';
 import { getCategory } from '../store/actions/categoryAction';
 import { useSelector, useDispatch } from "react-redux";
 import AdminLayout from "../components/Layouts/AdminLayout";
+
 
 function Dashboard() {
 
@@ -108,7 +108,7 @@ function Dashboard() {
 
 
                     <br />
-                    <button type="button" className="btn btn-primary" onClick={() => reGetCategory() }>get cateogry</button>
+                    {/* <button type="button" className="btn btn-primary" onClick={() => getKategori() }>get cateogry</button> */}
 
 
                            

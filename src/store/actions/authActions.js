@@ -1,9 +1,15 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
+// require('dotenv').config()
+
+const { REACT_APP_BASE_URL } = process.env;
+
 export const getToken = () => {
 
     return async (dispatch, getState) => {
+
+        // console.log("base url ", REACT_APP_BASE_URL);
 
         try {
 
@@ -17,7 +23,7 @@ export const getToken = () => {
             
         } catch (error) {
 
-            window.location.href = "http://localhost:3000/login";
+            window.location.href = REACT_APP_BASE_URL+"/login";
             
         }
 

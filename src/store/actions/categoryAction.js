@@ -29,16 +29,29 @@ axiosJWT.interceptors.request.use(async (config) => {
 });
 
 
-export const getCategory = () => {
+export const getCategory = (pageChange = null, searchKeyword = '') => {
 
     return async (dispatch, getState) => {
 
         expired = getState().auth.expire
 
-        const response = await axiosJWT.get("http://localhost:5000/category?page=1", {
-            headers: {
-                Authorization: `Bearer ${getState().auth.token}`
-            }
+        const searchKeyword = getState().category.searchKeyword
+
+        let  apiUrl = ""
+
+        let page = pageChange !== null ? pageChange : 1;
+
+
+        if(searchKeyword == ""){
+            apiUrl = "http://localhost:5000/category?page="+page;
+        }else{
+            apiUrl = "http://localhost:5000/category?search="+searchKeyword+"&page="+page
+        }
+
+        const response = await axiosJWT.get(apiUrl, {
+                headers: {
+                    Authorization: `Bearer ${getState().auth.token}`
+                }
         });
 
         dispatch({
@@ -49,34 +62,8 @@ export const getCategory = () => {
 
     }
 }
-
-export const getCategoryPage = (page) => {
-
-    // console.log("page action", page);
-
-    return async (dispatch, getState) => {
-
-        expired = getState().auth.expire
-
-        const response = await axiosJWT.get("http://localhost:5000/category?page="+page, {
-            headers: {
-                Authorization: `Bearer ${getState().auth.token}`
-            }
-        });
-
-        dispatch({
-            type: "SET_CATEGORY",
-            data: response.data.data,
-            page: response.data.page
-        });
-
-    }
-}
-
 
 export const getCategoryAll = () => {
-
-    // console.log("page action", page);
 
     return async (dispatch, getState) => {
 
@@ -89,10 +76,11 @@ export const getCategoryAll = () => {
         });
 
         dispatch({
-            type: "SET_CATEGORY",
+            type: "SET_ALL_CATEGORY",
             data: response.data.data,
             page: response.data.page
         });
 
     }
 }
+
