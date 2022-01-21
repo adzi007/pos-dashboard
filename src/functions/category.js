@@ -66,7 +66,18 @@ export const updateCategory = async (data, id) => {
     }
 
     let submitCategory = await axiosJWT.put('http://localhost:5000/category/'+id, data, config);
-
     return submitCategory;
 
 } 
+
+export const deleteCategoryAction = async (id) => {
+
+    const deleteResponse = await axiosJWT.delete('http://localhost:5000/category/' + id, {
+        headers: {
+            Authorization: `Bearer ${store.getState().auth.token}`
+        }
+    });
+
+    return deleteResponse;
+
+}

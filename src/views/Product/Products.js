@@ -1,23 +1,34 @@
 import { Link } from "react-router-dom";
-
 import AdminLayout from "../../components/Layouts/AdminLayout"
+import Dt_table from "../../components/Dt_table";
 
 function Products() {
     return (
         <AdminLayout>
 
             <div className="container-fluid px-4 mb-5">
-                <h1 className="mt-4">Daftar Product</h1>
-                <ol className="breadcrumb mb-4">
-                    <li className="breadcrumb-item active">Product</li>
-                </ol>
+
+
+            <div className="row mt-3 mb-2">
+                    <div className="col-6">
+                        <h2 className="mt-4">Daftar Product </h2>
+                        <ol className="breadcrumb mb-2">
+                            <li className="breadcrumb-item ">Dashboard</li>
+                            <li className="breadcrumb-item active">product</li>
+                        </ol>
+                    </div>
+                    <div className="col-6 d-flex align-items-center justify-content-end">
+                        <Link to="/category/add" className="btn btn-primary mt-4">Add Product</Link>
+                        <button type="button" className="btn btn-primary mt-4 mx-1"><i className="icon-print"></i></button>
+                        <button type="button" className="btn btn-primary mt-4"><i className="icon-refresh2"></i></button>
+                    </div>
+                </div>
 
                 
                 <div>
                     <div className="row">
                         <div className="col-12">
 
-                            <Link to="/product/add" className="btn btn-primary mb-2">Add Product</Link>
                             <div className="card">
                                 
                                 <div className="table-responsive">
