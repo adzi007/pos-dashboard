@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCategory } from "../../store/actions/categoryAction";
 import { getToken } from "../../store/actions/authActions";
 import { add, dataCategory } from "../../functions/category.js";
-import axios from 'axios';
+
 
 function Categories() {
     
@@ -58,39 +58,40 @@ function Categories() {
                     <div className="row">
                         <div className="col-12">
                                     
-                                    <Dt_table datasource="testdata" datastate={category} pageNavigation={getCategory}>
-                                        <thead className="thead-light">
-                                            <tr>
-                                                <th> &nbsp;&nbsp;#</th>
-                                                <th scope="col">image</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Parent Category</th>
-                                                <th scope="col">Slug</th>
-                                                <th></th>
+                            <Dt_table datasource="testdata" datastate={category} pageNavigation={getCategory}>
+                                <thead className="thead-light">
+                                    <tr>
+                                        <th> &nbsp;&nbsp;#</th>
+                                        <th scope="col">image</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Parent Category</th>
+                                        <th scope="col">Slug</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody className="customtable">
+
+                                    { category.data.map( (row, index) => { 
+
+                                        return(
+                                            <tr key={index}>
+                                                <th>{ offset + index }</th>
+                                                <td>{ row.name }</td>
+                                                <td>{ row.name }</td>
+                                                <td>{ row.parent !== null ? row.parent.name : '' }</td>
+                                                <td>{ row.slug }</td>
+                                                <th>
+                                                    {/* <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button> */}
+                                                    <Link to={ '/category/edit/' + row.id } className="btn btn-light btn-tbl-action" ><i className="icon-pencil2"></i></Link>
+                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
+                                                </th>
                                             </tr>
-                                        </thead>
-                                        <tbody className="customtable">
-
-                                            { category.data.map( (row, index) => { 
-
-                                                return(
-                                                    <tr key={index}>
-                                                        <th>{ offset + index }</th>
-                                                        <td>{ row.name }</td>
-                                                        <td>{ row.name }</td>
-                                                        <td>{ row.parent !== null ? row.parent.name : '' }</td>
-                                                        <td>{ row.slug }</td>
-                                                        <th>
-                                                            <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button>
-                                                            <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
-                                                        </th>
-                                                    </tr>
-                                                )
-                                                                                            
-                                            })}
-                                            
-                                        </tbody>
-                                    </Dt_table>
+                                        )
+                                                                                    
+                                    })}
+                                    
+                                </tbody>
+                            </Dt_table>
                         </div>
                     </div>
             </div>

@@ -43,3 +43,30 @@ export const postCategory = async (data) => {
     return submitCategory;
 
 }
+
+export const getCategoryById = async (id) => {
+
+    const response = await axiosJWT.get('http://localhost:5000/category/' + id, {
+        headers: {
+            Authorization: `Bearer ${store.getState().auth.token}`
+        }
+    });
+
+    return response.data.data;
+
+}
+
+export const updateCategory = async (data, id) => {
+
+    const config = {
+            headers: { 
+                'content-type': 'multipart/form-data',
+                'Authorization': `Bearer ${store.getState().auth.token}`
+            }
+    }
+
+    let submitCategory = await axiosJWT.put('http://localhost:5000/category/'+id, data, config);
+
+    return submitCategory;
+
+} 

@@ -1,18 +1,20 @@
-import axios from "axios";
-import jwt_decode from "jwt-decode";
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getToken } from "../../store/actions/authActions";
 import { getCategoryAll } from "../../store/actions/categoryAction";
 import AdminLayout from "../../components/Layouts/AdminLayout"
+import { getCategoryById, updateCategory } from "../../functions/category";
 
 function AddCategory() {
 
+    const { id } = useParams();
     const [name, setName] = useState('');
     const [slug, setSlug] = useState('');
     const [parent_category, setParent_category] = useState('0');
-    const [foto, setFoto] = useState([]);
+    const [curentFoto, setCurentFoto] = useState('');
+    const [foto, setFoto] = useState({});
+    const [isChangeFoto, setIsChangeFoto] = useState(false);
 
 
     const dispatch = useDispatch();
@@ -28,34 +30,35 @@ function AddCategory() {
 
         await dispatch(getToken());
         dispatch(getCategoryAll());
+        getDataCategoryById()
+    }
+
+    const getDataCategoryById = async () => {
+
+        let data = await getCategoryById(id);
+        console.log("data", data);
+
+        setName(data.name)
+        setSlug(data.slug)
+        setParent_category(data.parent_category)
+        setCurentFoto(data.foto)
     }
 
     const category = useSelector( (state) => state.category );
 
-    const axiosJWT = axios.create();
+    const changeFoto = (file) => {
 
-    const authExpire = useSelector( (state) => state.auth.expire );
+        setFoto(file)
+        setIsChangeFoto(true)
 
-    axiosJWT.interceptors.request.use(async (config) => {
+        let imgSrc = URL.createObjectURL(file)
 
-        const currentDate = new Date();
-        if (authExpire * 1000 < currentDate.getTime()) {
-            const response = await axios.get('http://localhost:5000/token');
-            config.headers.Authorization = `Bearer ${response.data.accessToken}`;
-            const decoded = jwt_decode(response.data.accessToken);
-            
-            dispatch({
-                type: "SET_TOKEN",
-                token: response.data.accessToken,
-                expire: decoded.exp
-            });
-        }
-    
-        return config;
-        
-    }, (error) => {
-        return Promise.reject(error);
-    });
+        setCurentFoto(imgSrc);
+
+        // console.log("imgSrc", imgSrc);
+
+    }
+
 
 
     const submitCategory = async (e) => {
@@ -68,22 +71,24 @@ function AddCategory() {
             data.append("name", name);
             data.append("slug", slug);
             data.append("parent_category", parent_category);
-            data.append('foto', foto);
 
-            const config = {
-                headers: { 'content-type': 'multipart/form-data' }
+            if(isChangeFoto == true){
+                data.append('foto', foto);
             }
-            
-            let inputCategory = await axiosJWT.post('http://localhost:5000/category', data, config);
 
-            if(inputCategory.status == 200){
+            let updateCategoryResponse = await updateCategory(data, id);
+
+            if(updateCategoryResponse.status == 200){
 
                 navigate("/category");
 
             }else{
+
                 alert("failed to add category");
-                console.log(inputCategory);
+                console.log(updateCategoryResponse);
             }
+            
+            
             
         } catch (error) {
             alert("failed to add category");
@@ -141,9 +146,18 @@ function AddCategory() {
                                     </div>
 
                                     <div className="mb-3">
+
+                                        <img src={curentFoto} className="img-thumbnail" width="125px" alt="..." />
+
+                                    </div>
+
+
+
+                                    <div className="mb-3">
                                         <label className="form-label">Image Category</label>
-                                        <input type="file" className="form-control" id="foto" onChange={e => setFoto(e.target.files[0])} />
+                                        <input type="file" className="form-control" id="foto" onChange={e => changeFoto(e.target.files[0])} />
                                     </div>   
+
                                     <button type="submit" className="btn btn-primary mt-4">Submit</button>
                                     <Link to="/category/" className="btn btn-light mt-4 ms-2">Cancel</Link>                                 
                                 </form>
