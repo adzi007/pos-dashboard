@@ -1,8 +1,33 @@
+import React, { useState, useEffect  } from 'react'
 import { Link } from "react-router-dom";
 import AdminLayout from "../../components/Layouts/AdminLayout"
 import Dt_table from "../../components/Dt_table";
+import { useSelector, useDispatch } from "react-redux";
+import { getToken } from "../../store/actions/authActions";
+import { getProduct } from "../../store/actions/productAction";
 
 function Products() {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+        initData();
+       
+    },[]);
+
+    const initData = async () => {
+
+        await dispatch(getToken());
+        dispatch(getProduct());
+    }
+
+    const product = useSelector( (state) => state.product );
+    const offset = (product.page.offset !== undefined ? product.page.offset : 0) + 1;
+
+    // console.log("product", product);
+
+
     return (
         <AdminLayout>
 
@@ -18,7 +43,7 @@ function Products() {
                         </ol>
                     </div>
                     <div className="col-6 d-flex align-items-center justify-content-end">
-                        <Link to="/category/add" className="btn btn-primary mt-4">Add Product</Link>
+                        <Link to="/product/add" className="btn btn-primary mt-4">Add Product</Link>
                         <button type="button" className="btn btn-primary mt-4 mx-1"><i className="icon-print"></i></button>
                         <button type="button" className="btn btn-primary mt-4"><i className="icon-refresh2"></i></button>
                     </div>
@@ -32,7 +57,7 @@ function Products() {
                             <div className="card">
                                 
                                 <div className="table-responsive">
-                                    <table className="table">
+                                    <Dt_table datasource="testdata" datastate={product} pageNavigation={getProduct}>
                                         <thead className="thead-light">
                                             <tr>
                                                 <th>&nbsp;&nbsp;#</th>
@@ -45,80 +70,31 @@ function Products() {
                                             </tr>
                                         </thead>
                                         <tbody className="customtable">
-                                            <tr>
-                                                <th>1</th>
-                                                <td>India</td>
-                                                <td>Chrome OS</td>
-                                                <td>MAC OS</td>
-                                                <td>76</td>
-                                                <td>76</td>
-                                                 <td className="td-table-action">
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button>
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>2</th>
-                                                <td>USA</td>
-                                                <td>Internet Explorer</td>
-                                                <td>Win 2010</td>
-                                                <td>10</td>
-                                                <td>10</td>
-                                                <td className="td-table-action">
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button>
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>3</th>
-                                                <td>UK</td>
-                                                <td>Safari</td>
-                                                <td>Mac OS</td>
-                                                <td>16</td>
-                                                <td>16</td>
-                                                 <td className="td-table-action">
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button>
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>4</th>
-                                                <td>UAE</td>
-                                                <td>Google Chrome</td>
-                                                <td>Win 2013</td>
-                                                <td>76.12</td>
-                                                <td>76.12</td>
-                                                 <td className="td-table-action">
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button>
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>5</th>
-                                                <td>Canada</td>
-                                                <td>Internet Explorer</td>
-                                                <td>Win 2010</td>
-                                                <td>10</td>
-                                                <td>10</td>
-                                                 <td className="td-table-action">
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button>
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>6</th>
-                                                <td>Turkey</td>
-                                                <td>Internet Explorer 8</td>
-                                                <td>Win 2010</td>
-                                                <td>8</td>
-                                                <td>8</td>
-                                                 <td className="td-table-action">
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button>
-                                                    <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
-                                                </td>
-                                            </tr>
+
+                                            { product.data.map( (row, index) => { 
+
+                                                return(
+                                                    <tr key={index}>
+                                                        <th>{ offset + index }</th>
+                                                        <td>
+                                                            <img src={ row.image } className="img-thumbnail" alt="..." width="50px" />
+                                                        </td>
+                                                        <td>{ row.name }</td>
+                                                        <td>{ row.category.name }</td>
+                                                        <td>{ 'Rp. ' + row.price }</td>
+                                                        <td>{ row.stock }</td>
+                                                        <th>
+                                                            <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button>
+                                                            {/* <Link to={ '/category/edit/' + row.id } className="btn btn-light btn-tbl-action" ><i className="icon-pencil2"></i></Link> */}
+                                                            <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
+                                                        </th>
+                                                    </tr>
+                                                )
+                                                                                            
+                                            })}
+                                            
                                         </tbody>
-                                    </table>
+                                    </Dt_table>
                                 </div>
                             </div>
                         </div>

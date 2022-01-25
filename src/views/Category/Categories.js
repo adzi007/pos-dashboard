@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy  } from 'react'
+import React, { useState, useEffect  } from 'react'
 import { Link } from "react-router-dom";
 import AdminLayout from "../../components/Layouts/AdminLayout";
 import Dt_table from "../../components/Dt_table";
