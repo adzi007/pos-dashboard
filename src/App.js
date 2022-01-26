@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import axios from 'axios';
 import Dashboard from "./views/Dashboard";
 import Products from './views/Product/Products';
+import EditProduct from './views/Product/EditProduct';
 import Categories from './views/Category/Categories';
 import AddCategory from './views/Category/AddCategory';
 import AddProduct from './views/Product/AddProduct';
@@ -23,6 +24,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/product" element={<Products />} />
           <Route path="/product/add" element={<AddProduct />} />
+          <Route path="/product/edit/:id" element={<EditProduct />} />
+
           <Route exact path="/category" element={<Categories />} />
           <Route path="/category/add" element={ <AddCategory />} />
           <Route path="/category/edit/:id" element={ <EditCategory />} />

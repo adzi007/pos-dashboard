@@ -5,6 +5,8 @@ import Dt_table from "../../components/Dt_table";
 import { useSelector, useDispatch } from "react-redux";
 import { getToken } from "../../store/actions/authActions";
 import { getProduct } from "../../store/actions/productAction";
+import { deleteProductAction } from '../../functions/product';
+import Swal from 'sweetalert2';
 
 function Products() {
 
@@ -25,7 +27,46 @@ function Products() {
     const product = useSelector( (state) => state.product );
     const offset = (product.page.offset !== undefined ? product.page.offset : 0) + 1;
 
-    // console.log("product", product);
+    // console.log("offset", product.page.offset);
+
+    const deleteProduct = async (id, name) => {
+
+        // console.log("delete", id);
+        Swal.fire({
+            title: 'Delete Confirmation',
+            text: "Are you sure want to delete " + name + " from list ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then( async (result) => {
+
+            if (result.isConfirmed) {
+
+                let deleteResponse = await deleteProductAction(id);
+
+                // console.log("deleteResponse", deleteResponse);
+
+                if (deleteResponse.status == 200) {
+
+                    dispatch(getProduct());
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Your product has been deleted.',
+                        'success'
+                    )
+                }else{
+
+                    alert("failed delete product");
+                    console.log(deleteResponse);
+
+                }
+            }
+          })
+
+    }
 
 
     return (
@@ -57,7 +98,7 @@ function Products() {
                             <div className="card">
                                 
                                 <div className="table-responsive">
-                                    <Dt_table datasource="testdata" datastate={product} pageNavigation={getProduct}>
+                                    <Dt_table datasource="testdata" datastate={product} pageNavigation={getProduct} setSearch="SET_SEARCH_PRODUCT">
                                         <thead className="thead-light">
                                             <tr>
                                                 <th>&nbsp;&nbsp;#</th>
@@ -84,9 +125,8 @@ function Products() {
                                                         <td>{ 'Rp. ' + row.price }</td>
                                                         <td>{ row.stock }</td>
                                                         <th>
-                                                            <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-pencil2"></i></button>
-                                                            {/* <Link to={ '/category/edit/' + row.id } className="btn btn-light btn-tbl-action" ><i className="icon-pencil2"></i></Link> */}
-                                                            <button type="button" className="btn btn-light btn-tbl-action"><i className="icon-trash2"></i></button>
+                                                            <Link to={ '/product/edit/' + row.id } className="btn btn-light btn-tbl-action" ><i className="icon-pencil2"></i></Link>
+                                                            <button type="button" className="btn btn-light btn-tbl-action" onClick={() => deleteProduct(row.id, row.name) }><i className="icon-trash2"></i></button>
                                                         </th>
                                                     </tr>
                                                 )

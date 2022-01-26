@@ -22,20 +22,20 @@ function Dt_table(props) {
     const changePage = useRef(null);
     const changeSearch = useRef('');
 
-    const { pageNavigation } = props;
+    const { pageNavigation, setSearch } = props;
 
     const onChangePage = ( pagechange ) => {
 
         dispatch(pageNavigation(pagechange, changeSearch ));
     }
 
-    console.log('state', props.datastate);
+    // console.log('state', props.datastate);
 
     const onSearch = (keyword) => {
         // console.log("mencari : ", keyword);
 
         dispatch({
-            type: "SET_SEARCH",
+            type: setSearch,
             searchKeyword: keyword
         });
 

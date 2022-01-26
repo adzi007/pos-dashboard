@@ -6,7 +6,6 @@ const { dispatch } = store; // direct access to redux store.
 
 const axiosJWT = axios.create();
 
-
 axiosJWT.interceptors.request.use(async (config) => {
 
     let expire = await store.getState().auth.expire;
@@ -31,22 +30,23 @@ axiosJWT.interceptors.request.use(async (config) => {
     return Promise.reject(error);
 });
 
-
-export const postCategory = async (data) => {
+export const postProduct = async (data) => {
 
     const config = {
-            headers: { 'content-type': 'multipart/form-data' }
+
+        'content-type': 'multipart/form-data',
+        'Authorization': `Bearer ${store.getState().auth.token}`
     }
 
-    let submitCategory = await axiosJWT.post('http://localhost:5000/category', data, config);
+    const submitProduct =  await axiosJWT.post('http://localhost:5000/product', data, config);
 
-    return submitCategory;
+    return submitProduct;
 
 }
 
-export const getCategoryById = async (id) => {
+export const getProductById = async (id) => {
 
-    const response = await axiosJWT.get('http://localhost:5000/category/' + id, {
+    const response = await axiosJWT.get('http://localhost:5000/product/' + id, {
         headers: {
             Authorization: `Bearer ${store.getState().auth.token}`
         }
@@ -56,7 +56,7 @@ export const getCategoryById = async (id) => {
 
 }
 
-export const updateCategory = async (data, id) => {
+export const updateProduct = async (data, id) => {
 
     const config = {
             headers: { 
@@ -65,14 +65,14 @@ export const updateCategory = async (data, id) => {
             }
     }
 
-    let submitCategory = await axiosJWT.put('http://localhost:5000/category/'+id, data, config);
-    return submitCategory;
+    let submitUpdateProduct = await axiosJWT.put('http://localhost:5000/product/'+id, data, config);
+    return submitUpdateProduct;
 
 } 
 
-export const deleteCategoryAction = async (id) => {
+export const deleteProductAction = async (id) => {
 
-    const deleteResponse = await axiosJWT.delete('http://localhost:5000/category/' + id, {
+    const deleteResponse = await axiosJWT.delete('http://localhost:5000/product/' + id, {
         headers: {
             Authorization: `Bearer ${store.getState().auth.token}`
         }

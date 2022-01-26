@@ -1,15 +1,17 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AdminLayout from "../../components/Layouts/AdminLayout"
 import AutocompleteProduct from "../../components/AutocompleteProduct";
 import SeletParentProduct from "../../components/SeletParentProduct";
 import { getToken } from "../../store/actions/authActions";
 import { getCategoryAll } from "../../store/actions/categoryAction";
-import { postProduct } from "../../functions/product";
+import { updateProduct, getProductById } from "../../functions/product";
+
 
 function AddProduct() {
 
+    const { id } = useParams();
     const [name, setName]                           = useState('');
     const [image, setImage]                         = useState([]);
     const [category_id, setCategory_id]             = useState('0');
@@ -23,7 +25,10 @@ function AddProduct() {
     const [tax, setTax]                             = useState(0);
     const [parent_product_id, setParent_product_id] = useState('0');
 
-    const [previewImage, setPreviewImage] = useState('/assets/images/default.png');
+    const [previewImage, setPreviewImage]           = useState('/assets/images/default.png');
+    const [isChangeImage, setIsChangeImage]         = useState(false);
+
+    const [parent, setParent] = useState(null);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -37,12 +42,32 @@ function AddProduct() {
     const initData = async () => {
 
         await dispatch(getToken());
-        dispatch(getCategoryAll());
+        await dispatch(getCategoryAll());
+        await getDataProduct()
         
     }
 
-    const category = useSelector( (state) => state.category );
+    const getDataProduct = async () => {
 
+        let product = await getProductById(id);
+        // console.log("product", product);
+        setName(product.name);
+        setCategory_id(product.category.id);
+        setBarcode(product.barcode);
+        setSku(product.sku);
+        setProduct_type(product.product_type);
+        setCost(product.cost);
+        setPrice(product.price);
+        setDiscount(product.discount);
+        setStock(product.stock);
+        setTax(product.tax);
+        setParent_product_id(product.parent_product_id);
+        setPreviewImage(product.foto)
+
+        setParent(product.parent);
+    }
+
+    const category = useSelector( (state) => state.category );
 
     const setSelectedParent = (selectedValue) => {
         setParent_product_id(selectedValue)
@@ -50,6 +75,7 @@ function AddProduct() {
 
     const changeImage = (file) => {
 
+        setIsChangeImage(true)
         setImage(file)
         let imgSrc = URL.createObjectURL(file)
         setPreviewImage(imgSrc)
@@ -62,7 +88,6 @@ function AddProduct() {
         let data = new FormData();
 
         data.append('name', name);
-        data.append('image', image);
         data.append('category_id', category_id);
         data.append('barcode', barcode);
         data.append('sku', sku);
@@ -74,27 +99,30 @@ function AddProduct() {
         data.append('tax', tax);
         data.append('parent_product_id', parent_product_id);
 
-        let inputProduct = await postProduct(data);
+        if(isChangeImage == true){
+            data.append('image', image);
+        }
 
-        if(inputProduct.status == 200){
+        let updatedProduct = await updateProduct(data, id);
+
+        if(updatedProduct.status == 200){
             navigate("/product");
         }else{
             alert("failed to add category");
-            console.log(inputProduct);
+            console.log(updatedProduct);
         }
 
 
     }
 
-
     return (
         <AdminLayout>
             <div className="container-fluid px-4">
-                <h1 className="mt-4">Add Produck</h1>
+                <h1 className="mt-4">Edit Produck</h1>
                 <ol className="breadcrumb mb-4">
                     <li className="breadcrumb-item ">Dashboard</li>
                     <li className="breadcrumb-item ">Product</li>
-                    <li className="breadcrumb-item active">Add Category</li>
+                    <li className="breadcrumb-item active">Edit Category</li>
                 </ol>
 
                 <div>
@@ -175,7 +203,7 @@ function AddProduct() {
 
                                             <div className="mb-3">
                                                 <label className="form-label">Prent Product</label>
-                                                <SeletParentProduct onChangeSelect={setSelectedParent} />
+                                                <SeletParentProduct onChangeSelect={setSelectedParent} dafultValue={parent} />
                                             </div>
                                             
                                         </div>

@@ -98,7 +98,7 @@ function Categories() {
                     <div className="row">
                         <div className="col-12">
                                     
-                            <Dt_table datasource="testdata" datastate={category} pageNavigation={getCategory}>
+                            <Dt_table datasource="testdata" datastate={category} pageNavigation={getCategory} setSearch="SET_SEARCH">
                                 <thead className="thead-light">
                                     <tr>
                                         <th> &nbsp;&nbsp;#</th>

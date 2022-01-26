@@ -6,7 +6,7 @@ import { getCategoryAll } from "../../store/actions/categoryAction";
 import AdminLayout from "../../components/Layouts/AdminLayout"
 import { getCategoryById, updateCategory } from "../../functions/category";
 
-function AddCategory() {
+function EditProduct() {
 
     const { id } = useParams();
     const [name, setName] = useState('');
@@ -36,7 +36,7 @@ function AddCategory() {
     const getDataCategoryById = async () => {
 
         let data = await getCategoryById(id);
-        console.log("data", data);
+        // console.log("data", data);
 
         setName(data.name)
         setSlug(data.slug)
@@ -50,13 +50,8 @@ function AddCategory() {
 
         setFoto(file)
         setIsChangeFoto(true)
-
         let imgSrc = URL.createObjectURL(file)
-
         setCurentFoto(imgSrc);
-
-        // console.log("imgSrc", imgSrc);
-
     }
 
 
@@ -172,4 +167,4 @@ function AddCategory() {
     )
 }
 
-export default AddCategory
+export default EditProduct
