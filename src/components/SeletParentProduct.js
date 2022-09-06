@@ -15,7 +15,7 @@ function SeletParentProduct(props) {
 
     const initData = () => {
 
-        if(dafultValue !== null) {
+        if(dafultValue != null) {
 
             setSelectedParent({
                 value: dafultValue.id,

@@ -27,7 +27,7 @@ function Products() {
     const product = useSelector( (state) => state.product );
     const offset = (product.page.offset !== undefined ? product.page.offset : 0) + 1;
 
-    // console.log("offset", product.page.offset);
+    console.log("product", product);
 
     const deleteProduct = async (id, name) => {
 

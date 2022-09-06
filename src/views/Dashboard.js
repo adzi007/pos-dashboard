@@ -100,11 +100,11 @@ function Dashboard() {
                         </div>
                     </div>
 
-                    <p>
+                    {/* <p>
                         count:  { counter }
                     </p>
                     <button type="button" className="btn btn-primary" onClick={() => handleTambah() }>add</button>
-                    <button type="button" className="btn btn-primary" onClick={() => handleKurang() }>min</button>
+                    <button type="button" className="btn btn-primary" onClick={() => handleKurang() }>min</button> */}
 
 
                     <br />
